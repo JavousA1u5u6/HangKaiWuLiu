@@ -16,11 +16,84 @@
 		<script type="text/javascript" src="../../js/easyui/ext/jquery.cookie.js"></script>
 		<script src="../../js/easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
 		<script type="text/javascript">
+		$.fn.serializeJson=function(){  
+            var serializeObj={};  
+            var array=this.serializeArray();  
+            var str=this.serialize();  
+            $(array).each(function(){  
+                if(serializeObj[this.name]){  
+                    if($.isArray(serializeObj[this.name])){  
+                        serializeObj[this.name].push(this.value);  
+                    }else{  
+                        serializeObj[this.name]=[serializeObj[this.name],this.value];
+                    }  
+                }else{  
+                    serializeObj[this.name]=this.value;   
+                }  
+            });  
+            return serializeObj;  
+        }; 
 			function doSearch() {
-				$('#tt').datagrid('load', {
-					
-				});
+				// 将form内容，转换为json 
+				var queryParams = $("#searchForm").serializeJson();
+				
+				// 绑定数据表格 重新加载数据 
+				$('#tt').datagrid('load', queryParams);
 			}
+			
+			$(function(){
+				// 开启运输管理 按钮
+				$("#transitBtn").click(function(){
+					// 获取数据表格所有选中行 
+					var rows = $("#tt").datagrid('getSelections');
+					if(rows.length == 0){
+						// 没有选中
+						$.messager.alert('警告','必须选中运单信息','warning');
+					}else{
+						// 选中运单 ，获取选中运单id 
+						var array = new Array();
+						for(var i=0; i<rows.length; i++){
+							array.push(rows[i].id);
+						}
+						var wayBillIds = array.join(",");
+						$.post("../../transit_create.action",{wayBillIds: wayBillIds}, function(data){
+							// 返回值 {success:true, msg: ...}
+							if(data.success == true){
+								$.messager.show({
+									title:'操作成功',
+  									msg: data.msg
+								});
+							}else{
+								$.messager.show({
+									title:'操作失败',
+  									msg: data.msg
+								});
+							}
+						});
+					}
+				});
+				  
+				// 导出Excel 按钮 
+				$("#exportXlsBtn").click(function(){
+					// 下载效果 
+					$("#searchForm").attr("action", "../../report_exportXls.action");
+					$("#searchForm").submit();
+				});
+				
+				// 导出 PDF 按钮 
+				$("#exportPdfBtn").click(function(){
+					// 下载效果 
+					$("#searchForm").attr("action", "../../report_exportPdf.action");
+					$("#searchForm").submit();
+				});
+				
+				// 结合模板 导出 PDF 按钮 
+				$("#exportJasperPdfBtn").click(function(){
+					// 下载效果 
+					$("#searchForm").attr("action", "../../report_exportJasperPdf.action");
+					$("#searchForm").submit();
+				});
+			});
 		</script>
 	</head>
 
@@ -34,8 +107,16 @@
 			<a id="help" icon="icon-save" href="#" class="easyui-linkbutton" plain="true">保存</a>
 			<a id="help" icon="icon-print" href="#" class="easyui-linkbutton" plain="true">打印标签</a>
 			<a id="help" icon="icon-print" href="#" class="easyui-linkbutton" plain="true">打印工作单</a>
+			<a id="transitBtn" icon="icon-edit" href="#" class="easyui-linkbutton" plain="true">开始中转配送</a>
+			<a id="exportXlsBtn" icon="icon-print" href="#" 
+				class="easyui-linkbutton" plain="true">导出Excel报表</a>
+			<a id="exportPdfBtn" icon="icon-print" href="#" 
+				class="easyui-linkbutton" plain="true">导出PDF报表</a>	
+			<a id="exportJasperPdfBtn" icon="icon-print" href="#" 
+				class="easyui-linkbutton" plain="true">结合模板导出PDF报表</a>	
 			
 			<br />
+			<form id="searchForm" method="post">
 				运单号：<input name="wayBillNum" style="line-height:26px;border:1px solid #ccc">
 				发货地：<input name="sendAddress" style="line-height:26px;border:1px solid #ccc" >
 				收货地：<input name="recAddress" style="line-height:26px;border:1px solid #ccc" >
@@ -57,8 +138,10 @@
 				
 				<a href="javascript:void" class="easyui-linkbutton" 
 					plain="true" onclick="doSearch()">查询</a> 
+			</form>
 		</div>
-		<table id="tt" class="easyui-datagrid" fit="true" toolbar="#tb" rownumbers="true" pagination="true">
+		<table id="tt" class="easyui-datagrid" 
+			url="../../waybill_pageQuery.action" fit="true" toolbar="#tb" rownumbers="true" pagination="true">
 			<thead>
 				<tr>
 					<th field="ck" checkbox="true"></th>

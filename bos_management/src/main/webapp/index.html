@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>BOS管理系统 首页</title>
-		<link href="favicon.ico" rel="icon" type="image/x-icon" />
 		<!-- 导入jquery核心类库 -->
 		<script type="text/javascript" src="./js/jquery-1.8.3.js"></script>
 		<!-- 导入easyui类库 -->
@@ -32,7 +31,7 @@
 				};
 				
 				// 基本功能菜单加载
-				$.post("./data/menu.json",function(data){
+				$.post("./menu_showmenu.action",function(data){
 					$.fn.zTree.init($("#treeMenu"), setting, data);
 				},"json");
 				
@@ -150,7 +149,7 @@
 				$.messager
 				.confirm('系统提示','您确定要退出本次登录吗?',function(isConfirm) {
 					if (isConfirm) {
-						location.href = './login.html';
+						location.href = './user_logout.action';
 					}
 				});
 			}
@@ -160,13 +159,13 @@
 			}
 			// 版权信息
 			function showAbout(){
-				$.messager.alert("bos v2.0综合物流管理平台","设计: 传智播客<br/> 管理员邮箱: itcast_search@163.com <br/>");
+				$.messager.alert("宅急送 v1.0","设计: yuyang<br/> 管理员邮箱: yuyang@itcast.cn <br/> QQ: 117038615");
 			}
 		</script>
 	</head>
 
 	<body class="easyui-layout">
-		<div data-options="region:'north',border:false" style="height:70px;padding:10px;">
+		<div data-options="region:'north',border:false" style="height:80px;padding:10px;background:url('./images/header_bg.png') no-repeat right;">
 			<div>
 				<img src="./images/logo.png" border="0">
 			</div>
@@ -208,13 +207,13 @@
 				</div>
 			</div>
 		</div>
-		<div data-options="region:'south',border:false" style="height:50px;padding:10px;">
+		<div data-options="region:'south',border:false" style="height:50px;padding:10px;background:url('./images/header_bg.png') no-repeat right;">
 			<table style="width: 100%;">
 				<tbody>
 					<tr>
-						<td style="width: 400px;">
+						<td style="width: 300px;">
 							<div style="color: #999; font-size: 8pt;">
-								BOSv2.0综合物流管理平台 | Powered by <a href="http://www.itcast.cn/">传智播客</a>
+								传智播客 | Powered by <a href="http://www.itcast.cn/">itcast.cn</a>
 							</div>
 						</td>
 						<td style="width: *;" class="co1"><span id="online" style="background: url(./images/online.png) no-repeat left;padding-left:18px;margin-left:3px;font-size:8pt;color:#005590;">在线人数:1</span>

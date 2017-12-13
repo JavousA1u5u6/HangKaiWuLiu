@@ -65,8 +65,8 @@
 			}];
 			// 定义列
 			var columns = [ [ {
-				field : 'id',
-				title : '工作单号',
+				field : 'wayBillNum',
+				title : '运单号',
 				width : 120,
 				align : 'center',
 				editor :{
@@ -76,7 +76,7 @@
 					}
 				}
 			}, {
-				field : 'arrivecity',
+				field : 'arriveCity',
 				title : '到达地',
 				width : 120,
 				align : 'center',
@@ -87,8 +87,8 @@
 					}
 				}
 			},{
-				field : 'product',
-				title : '产品',
+				field : 'goodsType',
+				title : '货物类型',
 				width : 120,
 				align : 'center',
 				editor :{
@@ -146,11 +146,25 @@
 					pageList: [30,50,100],
 					pagination : true,
 					toolbar : toolbar,
-					url :  "",
+					url :  "../../waybill_pageQuery.action",
 					idField : 'id',
 					columns : columns,
 					onDblClickRow : doDblClickRow,
 					onAfterEdit : function(rowIndex, rowData, changes){
+						// 将新添加运单数据 保存到 数据表中 
+						$.post("../../waybill_save.action",rowData, function(data){
+							// data数据格式 {success:true, msg:'xxxx'} 
+							if(data.success){
+								// 保存成功 
+								$.messager.show({
+									title:'提示窗口',  	
+  									msg: data.msg,
+								});
+								
+								// 刷新列表 
+								$("#grid").datagrid('reload');
+							}
+						});
 						console.info(rowData);
 						editIndex = undefined;
 					}

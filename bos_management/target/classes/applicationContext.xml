@@ -12,11 +12,31 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/data/jpa 
 		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
-
+  
 	<!-- 扫描 @Server @Controller @Repository -->
 	<context:component-scan base-package="cn.itcast"/>
 
 	<!-- 加载properties文件 -->
 	<context:property-placeholder location="classpath:config.properties" />
 	
+	<!-- 引入外部数据文件 -->
+	<import resource="applicationContext-dataSource.xml"/>
+	
+	<!-- 引入WebService配置 -->
+	<import resource="applicationContext-webService.xml"/>
+	
+	<!-- 引入quartz配置 -->
+	<import resource="applicationContext-quartz.xml"/>
+	
+	<!-- 引入 mq配置  -->
+	<import resource="applicationContext-mq.xml"/>
+	
+	<!-- 引入 elasticsearch 配置  -->
+	<import resource="applicationContext-elasticsearch.xml"/>
+	
+	<!-- 引入 shiro权限控制配置 -->
+	<import resource="applicationContext-shiro.xml"/>
+	
+	<!-- 引入cache 配置 -->
+	<import resource="applicationContext-cache.xml"/>
 </beans>

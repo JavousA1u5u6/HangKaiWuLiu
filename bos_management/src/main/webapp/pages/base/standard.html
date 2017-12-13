@@ -30,9 +30,20 @@
 					pageList: [30,50,100],
 					pagination : true,
 					toolbar : toolbar,
-					url : "../../data/standard.json",
+					url : "../../standard_pageQuery.action",
 					idField : 'id',
 					columns : columns
+				});
+				
+				// 对收派标准 save按钮，添加click事件
+				$("#save").click(function(){
+					// 判断是否form中所有表单对象 都是通过校验 
+					if($("#standardForm").form('validate')){
+						// 通过校验 
+						$("#standardForm").submit();
+					}else{
+						$.messager.alert("警告","表单中还存在需要一些非法内容","warning");						
+					}
 				});
 			});	
 			
@@ -42,16 +53,28 @@
 				text : '增加',
 				iconCls : 'icon-add',
 				handler : function(){
-					alert('增加');
+					$("#standardWindow").window('open');
 				}
 			}, {
 				id : 'button-edit',
 				text : '修改',
 				iconCls : 'icon-edit',
 				handler : function(){
-					alert('修改');
+					// 获取当前datagrid选中数据 
+					var rows = $("#grid").datagrid('getSelections');
+					if(rows.length != 1){
+						// 没选 或 多选 
+						$.messager.alert("提示信息","修改数据时，只能选中一行","warning");
+					}else{
+						// 只选中一行 
+						var row = rows[0]; 
+						// 进行表单回显操作 
+						$("#standardForm").form('load',row);
+						// 显示窗口
+						$("#standardWindow").window('open');
+					}
 				}
-			}];
+			} ];
 			
 			// 定义列
 			var columns = [ [ {
@@ -115,7 +138,8 @@
 
 			<div region="center" style="overflow:auto;padding:5px;" border="false">
 				
-				<form>
+				<form id="standardForm" 
+					action="../../standard_save.action" method="post">
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="2">收派标准信息

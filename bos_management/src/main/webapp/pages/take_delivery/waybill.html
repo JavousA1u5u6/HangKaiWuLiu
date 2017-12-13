@@ -25,9 +25,54 @@
 				// 对save按钮条件 点击事件
 				$('#save').click(function() {
 					// 对form 进行校验
-					if($('#orderForm').form('validate')) {
-						$('#orderForm').submit();
-					}
+					$.post("../../waybill_save.action",$("#waybillForm").serialize(),function(data){
+							// data数据格式 {success:true, msg:'xxxx'} 
+							if(data.success){
+								// 保存成功 
+								$.messager.show({
+									title:'提示窗口',  	
+  									msg: data.msg,
+								});
+								
+								// 重置表单
+								$("#waybillForm").get(0).reset();
+								$("input[name='order.id']").val('');
+							}
+					});
+				});
+				
+				// 对订单号输入项 添加 blur事件
+				$("#orderNum").blur(function(){
+					// 发起Ajax请求，查询订单数据 
+					$.post("../../order_findByOrderNum.action",{orderNum: $(this).val()}, 
+					function(data){
+						// 封装结果数据  { success:true , orderData: {} }
+						if(data.success){
+							// 装载数据 
+							$("#waybillForm").form('load',data.orderData) ;
+							// 处理无法自动load 元素
+							$("input[name='order.id']").val(data.orderData.id);
+							$("input[name='order.orderNum']").val(data.orderData.orderNum);
+							$("input[name='order.courier.company']").val(data.orderData.courier.company);
+							$("input[name='order.courier.name']").val(data.orderData.courier.name);
+						}else{
+							// 订单号 不存在，重置表单 
+							$("#waybillForm").get(0).reset();
+						}
+					});
+				});
+				
+				// 对运单快速录入数据进行回显
+				$("#wayBillNum").blur(function(){
+					// 发起Ajax请求 
+					$.post("../../waybill_findByWayBillNum.action",{wayBillNum: $(this).val()},
+					function(data){
+						// 封装结果数据  { success:true , wayBillData: {} }
+						if(data.success){
+							// 装载数据 
+							$("#waybillForm").form('load',data.wayBillData) ;
+						}
+					});
 				});
 			});
 		</script>
@@ -40,6 +85,8 @@
 			<a id="no" icon="icon-no" href="#" class="easyui-linkbutton" plain="true">取消</a>
 		</div>
 		<div style="width:95%;margin:10px auto">
+			<form id="waybillForm" method="post" 
+				action="../../waybill_save.action" >
 			<div class="table-top">
 				<table class="table-edit" width="95%">
 					<tr class="title">
@@ -49,7 +96,7 @@
 						<td>订单号</td>
 						<td>
 							<input type="hidden" name="order.id" id="orderId" />
-							<input type="text" name="order.orderNum" />
+							<input type="text" name="order.orderNum" id="orderNum"/>
 						</td>
 						<td>运单号</td>
 						<td>
@@ -265,7 +312,8 @@
 					</table>
 				</div>
 			</div>
-			<div class="clearfix"></div>		
+			<div class="clearfix"></div>
+			</form>			
 		</div>
 	</body>
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>数据表格 datagrid</title>
+		<script type="text/javascript" src="../js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+		<link rel="stylesheet" href="../js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="../js/easyui/themes/icon.css" />
+		<script type="text/javascript">
+			$(function(){
+				// 页面加载后，对datagrid 进行设置
+				$("#grid").datagrid({
+					// 设置表格一些属性 
+					columns : [[ // 二维数组 支持 多级表头， 每一个数组 就是表头一行
+						{
+							field: "id", // 用于和服务器返回json中字段对应 
+							title: "编号", // 列标题显示内容， <th> 
+							width: 100
+						},
+						{
+							field: "name", // 用于和服务器返回json中字段对应 
+							title: "商品名称", // 列标题显示内容， <th> 
+							width: 100
+						},
+						{
+							field: "price", // 用于和服务器返回json中字段对应 
+							title: "价格", // 列标题显示内容， <th> 
+							width: 100
+						}
+					]],
+					url : "product.json" , // 加载json数据，显示表格数据 
+					pagination : true , // 分页工具条
+					toolbar : [  // 一维数组，定义按钮 
+						{
+							id : "saveBtn",
+							text : "保存",
+							iconCls : "icon-save",
+							handler : function(){
+								alert("保存...");
+							}
+						}
+					]
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<!--数据表格-->
+		<table id="grid"></table>
+	</body>
+</html>

@@ -20,6 +20,18 @@
 				$('#save').click(function(){
 					$('#form').submit();
 				});
+				
+				// 获取所有角色信息，生成checkbox列表
+				$.get("../../role_list.action" , function(data){
+					// 遍历所有角色数据
+					$(data).each(function(){
+						// 生成checkbox 
+						var checkbox = $("<input type='checkbox' name='roleIds' />");
+						checkbox.val(this.id);
+						$("#roleTD").append(checkbox);
+						$("#roleTD").append(this.name);
+					});
+				});
 			});
 		</script>
 	</head>
@@ -31,7 +43,7 @@
 			</div>
 		</div>
 		<div region="center" style="overflow:auto;padding:5px;" border="false">
-			<form id="form" method="post">
+			<form id="form" method="post" action="../../user_save.action"> 
 				<table class="table-edit" width="95%" align="center">
 					<tr class="title">
 						<td colspan="4">基本信息</td>
@@ -94,10 +106,7 @@
 					</tr>
 					<tr>
 						<td>角色:</td>
-						<td colspan="3">
-							<input type="checkbox" name="roleIds" value="1" /> 经理
-							<input type="checkbox" name="roleIds" value="2" /> 仓库管理员
-							<input type="checkbox" name="roleIds" value="3" /> 客服人员
+						<td id="roleTD" colspan="3">
 						</td>
 					</tr>
 					<tr>
