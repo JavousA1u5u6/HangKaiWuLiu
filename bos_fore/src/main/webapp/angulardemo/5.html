@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>AngularJS路由使用 </title>
+		<script type="text/javascript" src="../js/angular.min.js" ></script>
+		<script type="text/javascript" src="../js/angular-route.min.js" ></script>
+	</head>
+	<body ng-app="myapp">
+		<div>
+			<h1>HEAD</h1>
+			<a href="#/JavaEE">JavaEE</a>
+			<a href="#/IOS">IOS</a>
+			<a href="#/Android">Android</a>
+		</div>
+		<!-- 路由加载后，更新变化的内容 -->
+		<div ng-view>
+			
+		</div>
+		<div>
+			<h1>FOOT</h1>
+		</div>
+	</body>
+	<script type="text/javascript">
+		// 定义 myapp 模块 
+		var myapp = angular.module("myapp",["ngRoute"]);
+		
+		// 配置模块的路由 
+		myapp.config(["$routeProvider", function($routeProvider){
+			$routeProvider
+			 .when('/JavaEE', {
+				 templateUrl: '5_1.html'
+			 }).when('/IOS', {
+				 templateUrl: '5_2.html'
+			 }).when('/Android', {
+				 templateUrl: '5_3.html'
+			 }).otherwise({
+			 	redirectTo: '/JavaEE'
+			 });
+		}]);
+		
+	</script>
+</html>

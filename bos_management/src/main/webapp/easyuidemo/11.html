@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>datagrid的行录入效果 </title>
+		<script type="text/javascript" src="../js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+		<link rel="stylesheet" href="../js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="../js/easyui/themes/icon.css" />
+	<script type="text/javascript">
+		$(function(){
+			$("#grid").datagrid({
+				columns : [[
+					{
+						field:'id',
+						title:'编号',
+						width: 100,
+						editor : {
+							type: 'validatebox',
+							options: {
+								required : true 
+							}
+						}
+					},
+					{
+						field:'name',
+						title:'商品名称',
+						width: 200,
+						editor : {
+							type: 'validatebox',
+							options: {
+								required : true 
+							}
+						}
+					},
+					{
+						field:'price',
+						title:'商品价格',
+						width: 200,
+						editor : {
+							type: 'validatebox',
+							options: {
+								required : true 
+							}
+						}
+					}
+				]],
+				toolbar : [
+					{
+						id:'add',
+						text:'添加',
+						iconCls:'icon-add',
+						handler : function(){
+							if(currentEditIndex != undefined){
+								// 正在编辑
+								return ;
+							}
+							// 插入一行新的数据，到首行 
+							$("#grid").datagrid('insertRow', {
+								index : 0 ,
+								row : {} // 空对象 
+							});
+							
+							// 开启编辑状态 
+							$("#grid").datagrid('beginEdit',0);
+							
+							// 保存全局变量 
+							currentEditIndex = 0 ;
+						}
+					},
+					{
+						id:'edit',
+						text:'编辑',
+						iconCls:'icon-edit',
+						handler : function(){
+							if(currentEditIndex != undefined){
+								// 正在编辑
+								return ;
+							}
+							// 获取到选中行
+							var row = $("#grid").datagrid('getSelected');
+							var index = $("#grid").datagrid('getRowIndex',row);
+							// 编辑第一行
+							$("#grid").datagrid('beginEdit',index);
+							// 保存到全局变量
+							currentEditIndex = index ;
+						}
+					},
+					{
+						id:'save',
+						text:'保存',
+						iconCls:'icon-save',
+						handler : function(){
+							// 保存编辑效果 
+							$("#grid").datagrid('endEdit',currentEditIndex);
+						}
+					},
+					{
+						id:'cancel',
+						text:'取消',
+						iconCls:'icon-cancel',
+						handler : function(){
+							// 保存编辑效果 
+							$("#grid").datagrid('cancelEdit',currentEditIndex);
+						}
+					}
+				],
+				url : 'product.json',
+				singleSelect : true , 
+				onAfterEdit : function(rowIndex, rowData, changes){
+					// 当保存成功后 才会触发 
+					currentEditIndex = undefined;
+				}, 
+				onCancelEdit : function(rowIndex, rowData){
+					currentEditIndex = undefined;
+				}
+			});
+			
+			// 全局变量 
+			var currentEditIndex ;
+		});
+	</script>
+	</head>
+	<body>
+		<table id="grid"></table>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>AngularJS集合数据遍历显示 </title>
+		<script type="text/javascript" src="../js/angular.min.js" ></script>
+	</head>
+	
+	<body ng-app="myapp" ng-controller="myctrl">
+		<table width="100%" border="1">
+			<tr>
+				<th>序号</th>
+				<th>商品编号</th>
+				<th>商品名称</th>
+				<th>价格</th>
+			</tr>
+			<tr ng-repeat="product in products">
+				<td>{{$index+1}}</td>
+				<td>{{product.id}}</td>
+				<td>{{product.name}}</td>
+				<td>{{product.price}}</td>
+			</tr>
+		</table>
+	</body>
+	
+	<script type="text/javascript">
+		var myapp = angular.module("myapp",[]);
+		myapp.controller("myctrl",["$scope",function($scope){
+			$scope.products = [
+				{
+					id : 1001,
+					name : '数码相机',
+					price : 3000
+				},
+				{
+					id : 1002,
+					name : '苹果手机',
+					price : 7000
+				}
+			];
+		}])
+	</script>
+</html>
