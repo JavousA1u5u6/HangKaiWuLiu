@@ -1,4 +1,4 @@
-﻿# 一、 航凯物流管理平台  整体概述#
+# 一、 航凯物流管理平台  整体概述#
 
 ## 1.项目背景 ##
 
@@ -29,6 +29,19 @@ BOS  Business Operating System 业务操作系统 (核心)
 
 ## 4.项目整体架构和技术 ##
 
+- 后台页面【新 待开发】
+    - [ANT DESIGN PRO](https://pro.ant.design/index-cn)：蚂蚁金服开箱即用中台前端
+    - React + dva + G2 + ANTD + ES2015+
+
+- 后台页面【旧】
+    - 感谢 [H-ui](http://www.h-ui.net/)、[FlatLab](https://github.com/Exrick/xmall/blob/master/study/FlatLab.md) 提供静态页面支持
+    - [Ztree](http://www.treejs.cn/v3/main.php#_zTreeInfo)：jQuery树插件
+    - [DataTables](http://www.datatables.club/)：jQuery表格插件
+    - [Distpicker](https://github.com/fengyuanchen/distpicker)：中国省市区地址三级联动插件
+    - [KindEditor](https://github.com/kindsoft/kindeditor)：富文本编辑器 简洁方便 没UEditor那么多坑
+    - [百度地图开放平台](http://lbsyun.baidu.com/index.php?title=%E9%A6%96%E9%A1%B5)：百度地图,很强发,很好用.
+    - 
+
 Server 端架构： Struts2+ Spring + Spring Data(简化持久层) + JPA 接口+ Hibernate（JPA 显现）
 后台管理系统 页面架构 ：jQuery Easyui 框架
 前端互联网系统 页面架构 ：BootStrap 响应式 + AngularJS
@@ -40,3 +53,17 @@ Redis 缓存使用 、ActiveMQ 消息队列
 定时调度框架： Quartz
 在线 HTML 编辑器： kindEditor 使用
 权限管理框架： Apache Shiro
+
+	- 其它开发工具
+    - [阿里JAVA开发规约插件](https://github.com/alibaba/p3c)
+
+### 文件说明
+- `dependency` 文件夹提供部分依赖与sql文件
+    - xmall.sql：数据库文件
+    - dubbo.xsd：需手动配置避免报错
+    - redis-3.0.0.gem：Redis集群搭建所需Ruby库
+- `generatorSqlmapCustom` 文件夹为 [Mybatis Generator](http://www.mybatis.org/generator/) 逆向生成工具，且已配置好maven插件
+
+
+### 技术疑问交流
+- 给作者项目Star或捐赠后可加入交流群 `89812637`
