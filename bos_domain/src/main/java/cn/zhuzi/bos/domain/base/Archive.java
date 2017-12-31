@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * @description:档案类，记录所有的分类信息，在子档中
+ * @description:档案类，记录所有的分类信息，在子档案中
  */
 @Entity
 @Table(name = "T_ARCHIVE")
